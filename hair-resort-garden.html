@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hair Resort Garden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Zen+Kaku+Gothic+New:wght@300;400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white:      #FEFCF8;
+  --ivory:      #F6F2E8;
+  --cream:      #EDE5D4;
+  --sage-pale:  #DFF0E6;
+  --sage-lt:    #B2D4BC;
+  --sage:       #7AAD8A;
+  --moss:       #547E65;
+  --forest-lt:  #3A7055;
+  --forest-md:  #2A5440;
+  --forest:     #1E3D2C;
+  --gold:       #B09050;
+  --gold-lt:    #C8AA6E;
+  --bark:       #3A2A1C;
+  --text-main:  #2C2218;
+  --text-mid:   #5A4E40;
+  --text-soft:  #8A7E72;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  background: var(--ivory);
+  color: var(--text-main);
+  font-weight: 300;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+/* ════════ NAV ════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 2rem; height: 64px;
+  background: rgba(254,252,248,0.96);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(30,61,44,0.1);
+  box-shadow: 0 1px 20px rgba(30,61,44,0.06);
+}
+.nav-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem; letter-spacing: 0.18em;
+  color: var(--forest); text-decoration: none;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+
+/* Desktop nav links */
+.nav-links { display: flex; gap: 0; list-style: none; align-items: center; }
+.nav-links li a {
+  font-family: 'Cinzel', serif;
+  font-size: 0.63rem; letter-spacing: 0.15em;
+  color: var(--text-mid); text-decoration: none;
+  padding: 0 1.2rem; text-transform: uppercase;
+  transition: color 0.2s;
+  display: block; height: 64px; line-height: 64px;
+  border-left: 1px solid rgba(30,61,44,0.08);
+}
+.nav-links li a:hover { color: var(--forest-lt); }
+.nav-links li:last-child a { border-right: 1px solid rgba(30,61,44,0.08); }
+.nav-cta { background: var(--forest) !important; color: var(--ivory) !important; }
+.nav-cta:hover { background: var(--forest-lt) !important; color: var(--white) !important; }
+
+/* Hamburger (mobile only) */
+.hamburger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer;
+  padding: 4px;
+}
+.hamburger span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--forest);
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* Mobile drawer */
+.mobile-menu {
+  display: none;
+  position: fixed; top: 64px; left: 0; right: 0; z-index: 190;
+  background: rgba(254,252,248,0.98);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(30,61,44,0.1);
+  flex-direction: column;
+  padding: 1rem 0;
+  box-shadow: 0 8px 24px rgba(30,61,44,0.1);
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text-mid); text-decoration: none;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(30,61,44,0.06);
+  transition: background 0.2s, color 0.2s;
+}
+.mobile-menu a:hover { background: var(--sage-pale); color: var(--forest); }
+.mobile-menu a.mobile-cta {
+  margin: 0.8rem 2rem 0.4rem;
+  background: var(--forest); color: var(--ivory) !important;
+  text-align: center; border: none;
+}
+
+/* ════════ HERO ════════ */
+.hero {
+  min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center; position: relative;
+  padding: 5rem 1.8rem 4rem; overflow: hidden;
+  background: var(--white);
+}
+.hero-wash {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 65% at 15% 85%, rgba(90,140,100,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 55% at 88% 15%, rgba(178,212,188,0.14) 0%, transparent 58%);
+}
+.hero-dots {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.32;
+  background-image: radial-gradient(circle, rgba(90,140,100,0.25) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+}
+.hero-corner { position: absolute; pointer-events: none; opacity: 0.16; }
+.hero-corner.tl { top: 72px; left: 20px; }
+.hero-corner.tr { top: 72px; right: 20px; transform: scaleX(-1); }
+.hero-corner.bl { bottom: 50px; left: 20px; transform: scaleY(-1); }
+.hero-corner.br { bottom: 50px; right: 20px; transform: scale(-1); }
+.hero-botanical { position: absolute; pointer-events: none; }
+.hero-botanical.l { top: 70px; left: 0; opacity: 0.13; }
+.hero-botanical.r { bottom: 50px; right: 0; opacity: 0.10; transform: scaleX(-1); }
+
+.hero-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.66rem; letter-spacing: 0.4em; color: var(--gold);
+  margin-bottom: 1.4rem;
+  display: flex; align-items: center; gap: 0.9rem;
+  opacity: 0; animation: fadeUp 0.9s 0.3s forwards;
+}
+.ey-line { width: 40px; height: 1px; background: var(--gold); opacity: 0.5; display: inline-block; }
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.8rem, 10vw, 7rem); font-weight: 300;
+  line-height: 1.0; letter-spacing: 0.05em; color: var(--forest);
+  margin-bottom: 0.15em;
+  opacity: 0; animation: fadeUp 1s 0.48s forwards;
+}
+.hero-title em { font-style: italic; color: var(--forest-lt); }
+.hero-kana {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem; letter-spacing: 0.28em; color: var(--gold-lt);
+  margin-bottom: 0.5rem;
+  opacity: 0; animation: fadeUp 1s 0.62s forwards;
+}
+.hero-tagline {
+  font-size: 0.82rem; letter-spacing: 0.12em; color: var(--text-soft);
+  margin-bottom: 2.6rem;
+  opacity: 0; animation: fadeUp 1s 0.76s forwards;
+}
+.hero-cta-row {
+  display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 1s 0.94s forwards;
+}
+.btn-hero {
+  font-family: 'Cinzel', serif;
+  font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.95rem 1.8rem; text-decoration: none;
+  border: 1px solid rgba(30,61,44,0.35);
+  color: var(--forest); background: transparent;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+  white-space: nowrap;
+}
+.btn-hero:hover { background: var(--forest); color: var(--ivory); border-color: var(--forest); }
+.btn-hero.primary { background: var(--forest); color: var(--ivory); border-color: var(--forest); }
+.btn-hero.primary:hover { background: var(--forest-lt); border-color: var(--forest-lt); }
+.scroll-hint {
+  position: absolute; bottom: 1.8rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  opacity: 0; animation: fadeIn 1s 1.5s forwards;
+}
+.scroll-hint span { font-family: 'Cinzel', serif; font-size: 0.54rem; letter-spacing: 0.26em; color: var(--text-soft); }
+.scroll-line { width: 1px; height: 28px; background: linear-gradient(to bottom, var(--forest-lt), transparent); animation: scrollPulse 2s 1.8s infinite; }
+
+/* ════════ STORES STRIP ════════ */
+.stores-strip {
+  display: flex; justify-content: center; align-items: stretch;
+  background: var(--forest); position: relative; overflow: hidden;
+}
+.stores-strip::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 8px);
+}
+.store-tab {
+  flex: 1; display: flex; align-items: center; gap: 1rem;
+  padding: 1.6rem 2rem; text-decoration: none;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.3s; position: relative; z-index: 1;
+}
+.store-tab:last-child { border-right: none; }
+.store-tab:hover { background: rgba(255,255,255,0.05); }
+.store-tab-name { font-family: 'Cinzel', serif; font-size: 0.76rem; letter-spacing: 0.16em; color: rgba(255,255,255,0.9); }
+.store-tab-sub { font-size: 0.7rem; color: rgba(178,212,188,0.55); letter-spacing: 0.08em; margin-top: 0.2rem; }
+
+/* ════════ SHARED ════════ */
+.sec-ey {
+  font-family: 'Cinzel', serif;
+  font-size: 0.64rem; letter-spacing: 0.34em; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.sec-ey::before { content:''; display:inline-block; width:20px; height:1px; background:var(--gold); opacity:0.6; }
+.sec-ey.center { justify-content: center; }
+.sec-ey.center::before { display: none; }
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.9rem, 4.5vw, 3rem); font-weight: 300; line-height: 1.2; margin-bottom: 1.3rem;
+}
+.sec-desc { font-size: 0.9rem; line-height: 2.1; max-width: 500px; }
+.leaf-rule { display:flex; align-items:center; gap:0.6rem; margin:1.1rem 0 1.6rem; }
+.leaf-rule-ln { width:20px; height:1px; background:rgba(90,140,100,0.35); display:inline-block; }
+
+/* ════════ CONCEPT ════════ */
+.concept {
+  padding: 5.5rem 2rem; background: var(--white); position: relative; overflow: hidden;
+}
+.concept::after {
+  content: ''; position: absolute; bottom: 0; right: 0;
+  width: 320px; height: 320px; pointer-events: none;
+  background-image: repeating-linear-gradient(-45deg, rgba(90,140,100,0.05) 0px, rgba(90,140,100,0.05) 1px, transparent 1px, transparent 10px);
+  mask-image: radial-gradient(ellipse 70% 70% at 100% 100%, black, transparent);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 100% 100%, black, transparent);
+}
+.concept-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  border: 1px solid rgba(30,61,44,0.12); overflow: hidden;
+}
+.concept-img-col { min-height: 500px; overflow: hidden; background: var(--sage-pale); }
+.concept-img-col img { width:100%; height:100%; object-fit:cover; display:block; }
+.concept-img-ph {
+  width:100%; height:100%; min-height:500px;
+  background: linear-gradient(160deg, #D8EAE0 0%, #B2D4BC 100%);
+  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1rem;
+}
+.ph-label { border:1px dashed rgba(30,61,44,0.3); padding:0.5rem 1.1rem; font-size:0.68rem; letter-spacing:0.12em; color:var(--forest-md); }
+.concept-txt {
+  padding: 4.5rem; background: var(--white); position: relative; overflow: hidden;
+}
+.concept-txt::after {
+  content: ''; position: absolute; bottom: -10px; right: -10px;
+  width: 140px; height: 140px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cpath d='M140 140 Q108 95 72 108 Q48 116 36 140Z' fill='%23B2D4BC' opacity='0.5'/%3E%3Cpath d='M140 140 Q116 72 94 82 Q70 90 56 140Z' fill='%237AAD8A' opacity='0.25'/%3E%3C/svg%3E");
+  background-size: cover; pointer-events: none;
+}
+.concept-txt .sec-title { color: var(--forest); }
+.concept-txt .sec-desc { color: var(--text-mid); }
+.concept-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.08rem; font-style: italic; color: var(--moss);
+  line-height: 2; margin-top: 2rem;
+  border-left: 2px solid var(--sage-lt); padding-left: 1.4rem;
+}
+
+/* ════════ FEATURES ════════ */
+.features {
+  background: var(--ivory); padding: 5rem 2rem; position: relative; overflow: hidden;
+}
+.features::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(90,140,100,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90,140,100,0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.features-inner {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 0;
+  border: 1px solid rgba(30,61,44,0.1); position: relative; z-index: 1;
+}
+.feat-item {
+  padding: 2.8rem 2rem; text-align: center;
+  border-right: 1px solid rgba(30,61,44,0.1); background: var(--white);
+  transition: background 0.3s;
+}
+.feat-item:last-child { border-right: none; }
+.feat-item:hover { background: var(--sage-pale); }
+.feat-icon { width: 46px; height: 46px; margin: 0 auto 1.2rem; }
+.feat-title { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:400; color:var(--forest); letter-spacing:0.05em; margin-bottom:0.6rem; }
+.feat-desc { font-size: 0.82rem; color: var(--text-mid); line-height: 2; }
+
+/* ════════ GALLERY ════════ */
+#gallery {
+  padding: 5.5rem 2rem; position: relative; overflow: hidden; background: var(--ivory);
+}
+#gallery::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(60deg, rgba(90,140,100,0.04) 0px, rgba(90,140,100,0.04) 1px, transparent 1px, transparent 22px);
+}
+.gallery-header { text-align:center; max-width:560px; margin:0 auto 3rem; position:relative; z-index:1; }
+.gallery-header .sec-title { color: var(--forest); }
+.gallery-header .sec-desc { color: var(--text-mid); margin: 0 auto; }
+.gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; max-width:1100px; margin:0 auto; position:relative; z-index:1; }
+.g-item { overflow:hidden; position:relative; cursor:pointer; }
+.g-item:first-child { grid-column:span 2; grid-row:span 2; }
+.g-frame { width:100%; aspect-ratio:1; overflow:hidden; display:block; }
+.g-item:first-child .g-frame { aspect-ratio:unset; height:100%; min-height:400px; }
+.g-frame img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.7s ease; }
+.g-item:hover .g-frame img { transform:scale(1.05); }
+.g-ph { width:100%; height:100%; min-height:180px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.5rem; transition:transform 0.7s ease; }
+.g-item:hover .g-ph { transform:scale(1.04); }
+.gp1 { background: linear-gradient(145deg, #D8EAE0, #A8CCBA); }
+.gp2 { background: linear-gradient(145deg, #E6F0E2, #B8D4C0); }
+.gp3 { background: linear-gradient(145deg, #EDE8DC, #CCC0A8); }
+.gp4 { background: linear-gradient(145deg, #D4E8DA, #9EC2AC); }
+.gp5 { background: linear-gradient(145deg, #F0EDDE, #D4C8A8); }
+.g-lbl { font-family:'Cinzel',serif; font-size:0.56rem; letter-spacing:0.16em; color:rgba(30,61,44,0.4); text-transform:uppercase; }
+.g-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(30,61,44,0.55) 0%, transparent 55%); opacity:0; transition:opacity 0.4s; display:flex; align-items:flex-end; padding:1.2rem; }
+.g-item:hover .g-overlay { opacity:1; }
+.g-pill { font-family:'Cinzel',serif; font-size:0.56rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--ivory); border:1px solid rgba(255,255,255,0.45); padding:0.28rem 0.8rem; }
+
+/* ════════ STORES ════════ */
+#stores {
+  padding: 5.5rem 2rem; position: relative; overflow: hidden; background: var(--white);
+}
+#stores::before {
+  content: ''; position: absolute; top: 0; right: 0; width: 280px; height: 280px; pointer-events: none;
+  background-image: repeating-linear-gradient(-45deg, rgba(90,140,100,0.06) 0px, rgba(90,140,100,0.06) 1px, transparent 1px, transparent 9px);
+  mask-image: radial-gradient(ellipse 80% 80% at 100% 0%, black, transparent);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 100% 0%, black, transparent);
+}
+#stores::after {
+  content: ''; position: absolute; bottom: 0; left: 0; width: 220px; height: 220px; pointer-events: none;
+  background-image: repeating-linear-gradient(45deg, rgba(90,140,100,0.05) 0px, rgba(90,140,100,0.05) 1px, transparent 1px, transparent 9px);
+  mask-image: radial-gradient(ellipse 80% 80% at 0% 100%, black, transparent);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 0% 100%, black, transparent);
+}
+.stores-hd { text-align:center; margin-bottom:3.5rem; position:relative; z-index:1; }
+.stores-hd .sec-title { color: var(--forest); }
+.stores-hd .sec-desc { color: var(--text-mid); margin: 0 auto; }
+.stores-grid { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:20px; position:relative; z-index:1; }
+.store-card {
+  background: var(--white); border: 1px solid rgba(30,61,44,0.1);
+  padding: 3rem; position: relative; overflow: hidden;
+  box-shadow: 0 4px 28px rgba(30,61,44,0.06);
+}
+.store-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(to right, var(--forest-md), var(--sage));
+}
+.store-card::after {
+  content: ''; position: absolute; bottom: 0; right: 0; width: 110px; height: 110px; pointer-events: none;
+  background-image: repeating-linear-gradient(-45deg, rgba(90,140,100,0.06) 0px, rgba(90,140,100,0.06) 1px, transparent 1px, transparent 8px);
+  mask-image: radial-gradient(ellipse 80% 80% at 100% 100%, black, transparent);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 100% 100%, black, transparent);
+}
+.store-badge {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.2em;
+  color:var(--forest-lt); border:1px solid rgba(30,61,44,0.2);
+  padding:0.32rem 0.85rem; margin-bottom:1.5rem; background: var(--sage-pale);
+}
+.store-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.9rem; font-weight:300; color:var(--forest);
+  letter-spacing:0.04em; line-height:1.2; margin-bottom:0.4rem;
+}
+.store-name em { font-style:italic; color:var(--forest-lt); }
+.store-kana { font-size:0.75rem; letter-spacing:0.16em; color:var(--text-soft); margin-bottom:1.8rem; }
+.store-divider { width:32px; height:1px; background:rgba(90,140,100,0.35); margin:1.5rem 0; }
+.store-table { width:100%; border-collapse:collapse; }
+.store-table tr { border-bottom:1px solid rgba(30,61,44,0.08); }
+.store-table td { padding:0.88rem 0; font-size:0.86rem; line-height:1.85; vertical-align:top; }
+.store-table td:first-child { font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.13em; color:var(--forest-lt); width:34%; padding-right:0.8rem; }
+.store-table td:last-child { color:var(--text-mid); }
+.store-map { margin-top:1.6rem; border:1px solid rgba(30,61,44,0.1); overflow:hidden; }
+.store-map-ph {
+  height:200px;
+  background: linear-gradient(135deg, var(--sage-pale) 0%, #C8DECC 100%);
+  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.7rem;
+}
+.store-map-ph p { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.14em; color:var(--forest-md); opacity:0.55; text-transform:uppercase; }
+.map-link {
+  font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--forest); border:1px solid rgba(30,61,44,0.3);
+  padding:0.5rem 1.2rem; text-decoration:none; transition:background 0.2s; display:inline-block;
+}
+.map-link:hover { background:rgba(30,61,44,0.08); }
+.btn-reserve-store {
+  display:block; margin-top:1.6rem; text-align:center;
+  font-family:'Cinzel',serif; font-size:0.64rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--white); background:var(--forest);
+  padding:1.05rem; text-decoration:none; border:1px solid var(--forest);
+  transition:background 0.3s;
+}
+.btn-reserve-store:hover { background:var(--forest-lt); border-color:var(--forest-lt); }
+.card-corner { position:absolute; opacity:0.12; pointer-events:none; }
+.card-corner.tl { top:0; left:0; }
+.card-corner.br { bottom:0; right:0; transform:rotate(180deg); }
+
+/* ════════ CTA ════════ */
+.cta {
+  padding: 6rem 2rem; text-align: center;
+  position: relative; overflow: hidden; background: var(--forest);
+}
+.cta::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 12px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 12px);
+}
+.cta::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(58,112,85,0.35), transparent 70%);
+}
+.cta-inner { position: relative; z-index: 1; }
+.cta-ey { font-family:'Cinzel',serif; font-size:0.66rem; letter-spacing:0.34em; color:rgba(200,170,110,0.75); display:block; margin-bottom:1.2rem; }
+.cta-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.9rem,4.5vw,3.4rem); font-weight:300; color:var(--ivory); line-height:1.2; margin-bottom:0.8rem; }
+.cta-title em { font-style:italic; color:var(--sage-lt); }
+.cta-sub { font-size:0.82rem; color:rgba(255,255,255,0.38); letter-spacing:0.1em; margin-bottom:2.8rem; }
+.cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+.btn-cta {
+  font-family:'Cinzel',serif; font-size:0.64rem; letter-spacing:0.2em; text-transform:uppercase;
+  padding:1.05rem 2.4rem; text-decoration:none;
+  border:1px solid rgba(255,255,255,0.3); color:var(--ivory); background:rgba(255,255,255,0.07);
+  transition:background 0.3s, border-color 0.3s;
+}
+.btn-cta:hover { background:rgba(255,255,255,0.16); border-color:rgba(255,255,255,0.55); }
+
+/* ════════ FOOTER ════════ */
+footer {
+  background: var(--bark); border-top: 1px solid rgba(200,170,110,0.15);
+  text-align: center; padding: 2.8rem 2rem; position: relative; overflow: hidden;
+}
+footer::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 10px);
+}
+.footer-logo { font-family:'Cinzel',serif; font-size:0.85rem; letter-spacing:0.24em; color:rgba(200,170,110,0.65); display:block; margin-bottom:0.6rem; position:relative; z-index:1; }
+.footer-links { display:flex; justify-content:center; gap:1.6rem; list-style:none; margin-bottom:1.2rem; flex-wrap:wrap; position:relative; z-index:1; }
+.footer-links a { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.14em; color:rgba(178,212,188,0.35); text-decoration:none; transition:color 0.2s; }
+.footer-links a:hover { color:var(--sage-lt); }
+.footer-sep { color:rgba(200,170,110,0.2); }
+.footer-copy { font-size:0.58rem; letter-spacing:0.12em; color:rgba(200,170,110,0.2); position:relative; z-index:1; }
+
+/* ════════ ANIMATIONS ════════ */
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn  { from { opacity:0; } to { opacity:1; } }
+@keyframes scrollPulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+.reveal { opacity:0; transform:translateY(22px); transition:opacity 0.9s ease, transform 0.9s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d { transition-delay:0.15s; }
+
+
+/* ════════════════════════════════════════
+   MOBILE  ≤ 768px
+════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Nav */
+  nav { padding: 0 1.4rem; height: 60px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .mobile-menu { top: 60px; }
+
+  /* Hero */
+  .hero { padding: 5rem 1.4rem 3.5rem; min-height: 100svh; }
+  .hero-corner { display: none; }
+  .hero-botanical.l { opacity: 0.09; }
+  .hero-botanical.r { opacity: 0.07; }
+  .hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.3em; }
+  .ey-line { width: 24px; }
+  .hero-title { font-size: clamp(2.6rem, 12vw, 4rem); }
+  .hero-kana { font-size: 0.62rem; letter-spacing: 0.2em; }
+  .hero-tagline { font-size: 0.78rem; margin-bottom: 2rem; }
+  .hero-cta-row { flex-direction: column; align-items: center; gap: 0.7rem; }
+  .btn-hero { width: 100%; max-width: 280px; text-align: center; padding: 1rem 1.4rem; }
+
+  /* Stores strip */
+  .stores-strip { flex-direction: column; }
+  .store-tab {
+    border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 1.3rem 1.6rem;
+  }
+  .store-tab:last-child { border-bottom: none; }
+  .store-tab-name { font-size: 0.72rem; }
+
+  /* Concept */
+  .concept { padding: 3.5rem 1.4rem; }
+  .concept-inner { grid-template-columns: 1fr; }
+  .concept-img-col { min-height: 240px; }
+  .concept-img-ph { min-height: 240px; }
+  .concept-txt { padding: 2.4rem 1.6rem; }
+  .concept-quote { font-size: 0.98rem; }
+
+  /* Features */
+  .features { padding: 3.5rem 1.4rem; }
+  .features-inner { grid-template-columns: 1fr; }
+  .feat-item {
+    border-right: none;
+    border-bottom: 1px solid rgba(30,61,44,0.1);
+    padding: 2.2rem 1.6rem;
+    display: flex; align-items: flex-start; gap: 1.2rem; text-align: left;
+  }
+  .feat-item:last-child { border-bottom: none; }
+  .feat-icon { width: 38px; height: 38px; margin: 0; flex-shrink: 0; }
+  .feat-content { flex: 1; }
+  .feat-title { font-size: 1.05rem; margin-bottom: 0.4rem; }
+  .feat-desc { font-size: 0.82rem; }
+
+  /* Gallery */
+  #gallery { padding: 3.5rem 1.4rem; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .g-item:first-child { grid-column: span 2; grid-row: span 1; }
+  .g-item:first-child .g-frame { min-height: 200px; aspect-ratio: 16/9; }
+  .g-ph { min-height: 150px; }
+
+  /* Stores */
+  #stores { padding: 3.5rem 1.4rem; }
+  .stores-grid { grid-template-columns: 1fr; gap: 16px; }
+  .store-card { padding: 2.2rem 1.6rem; }
+  .store-name { font-size: 1.6rem; }
+  .store-table td { font-size: 0.84rem; padding: 0.8rem 0; }
+  .store-table td:first-child { font-size: 0.58rem; }
+
+  /* CTA */
+  .cta { padding: 4rem 1.4rem; }
+  .cta-btns { flex-direction: column; align-items: center; }
+  .btn-cta { width: 100%; max-width: 280px; text-align: center; }
+
+  /* Footer */
+  footer { padding: 2.2rem 1.4rem; }
+  .footer-links { gap: 1rem; }
+}
+
+/* ════════ SMALL PHONE  ≤ 380px ════════ */
+@media (max-width: 380px) {
+  .hero-title { font-size: 2.4rem; }
+  .sec-title { font-size: 1.75rem; }
+  .store-name { font-size: 1.4rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="photo/logo.jpg" height="36" alt="Hair Resort Garden" style="display:block;">
+    Hair Resort Garden
+  </a>
+  <!-- Desktop links -->
+  <ul class="nav-links">
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#stores">店舗案内</a></li>
+    <li><a href="#stores" class="nav-cta">ネット予約</a></li>
+  </ul>
+  <!-- Hamburger button (mobile) -->
+  <button class="hamburger" id="hamburger" aria-label="メニューを開く">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#gallery"  onclick="closeMenu()">Gallery</a>
+  <a href="#stores"   onclick="closeMenu()">店舗案内</a>
+  <a href="#minami-kashiwa" onclick="closeMenu()">南柏店</a>
+  <a href="#calm"     onclick="closeMenu()">Garden CALM</a>
+  <a href="https://www.hotpepper.jp/" target="_blank" class="mobile-cta">ネット予約</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-wash"></div>
+  <div class="hero-dots"></div>
+  <svg class="hero-corner tl" width="64" height="64" viewBox="0 0 64 64" fill="none">
+    <path d="M2 62 L2 2 L62 2" stroke="#1E3D2C" stroke-width="1"/>
+    <circle cx="2" cy="2" r="2.5" fill="#1E3D2C"/>
+  </svg>
+  <svg class="hero-corner tr" width="64" height="64" viewBox="0 0 64 64" fill="none">
+    <path d="M2 62 L2 2 L62 2" stroke="#1E3D2C" stroke-width="1"/>
+    <circle cx="2" cy="2" r="2.5" fill="#1E3D2C"/>
+  </svg>
+  <svg class="hero-corner bl" width="64" height="64" viewBox="0 0 64 64" fill="none">
+    <path d="M2 62 L2 2 L62 2" stroke="#1E3D2C" stroke-width="1"/>
+    <circle cx="2" cy="2" r="2.5" fill="#1E3D2C"/>
+  </svg>
+  <svg class="hero-corner br" width="64" height="64" viewBox="0 0 64 64" fill="none">
+    <path d="M2 62 L2 2 L62 2" stroke="#1E3D2C" stroke-width="1"/>
+    <circle cx="2" cy="2" r="2.5" fill="#1E3D2C"/>
+  </svg>
+  <svg class="hero-botanical l" width="170" height="320" viewBox="0 0 170 320" fill="none">
+    <path d="M65 320 Q61 255 46 218 Q26 154 40 85 Q50 44 72 12" stroke="#2A5440" stroke-width="1.4" fill="none"/>
+    <path d="M62 260 Q38 245 14 230" stroke="#2A5440" stroke-width="1"/>
+    <path d="M55 220 Q32 206 8 192" stroke="#2A5440" stroke-width="1"/>
+    <path d="M50 176 Q74 160 94 142" stroke="#2A5440" stroke-width="1"/>
+    <ellipse cx="12" cy="228" rx="21" ry="13" fill="#B2D4BC" stroke="#2A5440" stroke-width="0.9" transform="rotate(16 12 228)"/>
+    <ellipse cx="6" cy="189" rx="19" ry="12" fill="#B2D4BC" stroke="#2A5440" stroke-width="0.9" transform="rotate(12 6 189)"/>
+    <ellipse cx="96" cy="138" rx="21" ry="13" fill="#B2D4BC" stroke="#2A5440" stroke-width="0.9" transform="rotate(-27 96 138)"/>
+    <circle cx="74" cy="10" r="6" fill="#7AAD8A" stroke="#2A5440" stroke-width="0.9"/>
+  </svg>
+  <svg class="hero-botanical r" width="155" height="295" viewBox="0 0 155 295" fill="none">
+    <path d="M80 295 Q76 230 62 196 Q44 138 57 74 Q66 36 86 8" stroke="#2A5440" stroke-width="1.4" fill="none"/>
+    <path d="M77 236 Q54 222 32 208" stroke="#2A5440" stroke-width="1"/>
+    <path d="M71 198 Q48 185 26 172" stroke="#2A5440" stroke-width="1"/>
+    <ellipse cx="30" cy="206" rx="19" ry="12" fill="#B2D4BC" stroke="#2A5440" stroke-width="0.9" transform="rotate(17 30 206)"/>
+    <ellipse cx="24" cy="170" rx="18" ry="11" fill="#B2D4BC" stroke="#2A5440" stroke-width="0.9" transform="rotate(13 24 170)"/>
+    <circle cx="88" cy="6" r="5" fill="#7AAD8A" stroke="#2A5440" stroke-width="0.9"/>
+  </svg>
+
+  <p class="hero-eyebrow"><span class="ey-line"></span>Hair Salon<span class="ey-line"></span></p>
+  <h1 class="hero-title">Hair Resort<br><em>Garden</em></h1>
+  <p class="hero-kana">ヘアリゾートガーデン</p>
+  <p class="hero-tagline">あなたらしい美しさへ — Natural &amp; Elegant</p>
+  <div class="hero-cta-row">
+    <a href="#minami-kashiwa" class="btn-hero primary">南柏店</a>
+    <a href="#calm" class="btn-hero">Garden CALM</a>
+    <a href="https://www.hotpepper.jp/" target="_blank" class="btn-hero">ネット予約</a>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══ STORES STRIP ══ -->
+<div class="stores-strip">
+  <a href="#minami-kashiwa" class="store-tab">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="opacity:0.7;flex-shrink:0"><path d="M9 1 Q14 5 12 10 Q10 15 9 15 Q8 15 6 10 Q4 5 9 1Z" fill="#B2D4BC"/><path d="M9 15 L9 9" stroke="#B2D4BC" stroke-width="0.8"/></svg>
+    <div>
+      <div class="store-tab-name">Hair Resort Garden 南柏店</div>
+      <div class="store-tab-sub">ヘアリゾートガーデン 南柏店</div>
+    </div>
+  </a>
+  <a href="#calm" class="store-tab">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="opacity:0.7;flex-shrink:0"><path d="M9 1 Q14 5 12 10 Q10 15 9 15 Q8 15 6 10 Q4 5 9 1Z" fill="#C8AA6E"/><path d="M9 15 L9 9" stroke="#C8AA6E" stroke-width="0.8"/></svg>
+    <div>
+      <div class="store-tab-name">Hair Resort Garden CALM</div>
+      <div class="store-tab-sub">ヘアリゾートガーデン カルム</div>
+    </div>
+  </a>
+</div>
+
+<!-- ══ CONCEPT ══ -->
+<div class="concept reveal">
+  <div class="concept-inner">
+    <div class="concept-img-col">
+      <!-- ▼ <img src="images/concept.jpg" alt="サロン内観"> に差し替え -->
+      <img src="photo/hutoago.jpg" alt="サロン内観" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+    <div class="concept-txt">
+      <span class="sec-ey">Our Concept</span>
+      <h2 class="sec-title">緑に包まれた<br>上質な時間を</h2>
+      <div class="leaf-rule"><span class="leaf-rule-ln"></span><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 Q11 4 9 8 Q7.5 11 6.5 11 Q5.5 11 4 8 Q2 4 6.5 1Z" fill="#B2D4BC" stroke="#7AAD8A" stroke-width="0.8"/></svg><span class="leaf-rule-ln"></span></div>
+      <p class="sec-desc">Hair Resort Garden は、お客様一人ひとりの髪質・ライフスタイルに寄り添い、自然体で輝けるスタイルをご提案するヘアサロンです。<br><br>緑豊かな空間の中で、心からリラックスしながら、あなただけの美しさを見つけてください。</p>
+      <p class="concept-quote">「髪を整えることは、<br>自分自身を大切にすること。」</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FEATURES ══ -->
+<div class="features reveal">
+  <div class="features-inner">
+    <div class="feat-item">
+      <svg class="feat-icon" viewBox="0 0 48 48" fill="none">
+        <path d="M24 4 Q36 12 32 24 Q28 36 24 36 Q20 36 16 24 Q12 12 24 4Z" fill="var(--sage-pale)" stroke="var(--sage)" stroke-width="1.2"/>
+        <path d="M24 36 L24 22" stroke="var(--moss)" stroke-width="1"/>
+        <path d="M16 24 Q8 28 5 40" stroke="var(--sage)" stroke-width="0.9" fill="none"/>
+        <path d="M32 24 Q40 28 43 40" stroke="var(--sage)" stroke-width="0.9" fill="none"/>
+      </svg>
+      <div class="feat-content">
+        <p class="feat-title">Natural Care</p>
+        <p class="feat-desc">髪と地肌にやさしい薬剤・施術にこだわります</p>
+      </div>
+    </div>
+    <div class="feat-item">
+      <svg class="feat-icon" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="18" r="10" fill="var(--sage-pale)" stroke="var(--sage)" stroke-width="1.2"/>
+        <path d="M24 8 Q22 2 18 4" stroke="var(--sage)" stroke-width="1" fill="none"/>
+        <path d="M24 8 Q26 2 30 4" stroke="var(--sage)" stroke-width="1" fill="none"/>
+        <path d="M11 38 C11 28 37 28 37 38" stroke="var(--sage)" stroke-width="1.2" fill="none"/>
+      </svg>
+      <div class="feat-content">
+        <p class="feat-title">One-on-One</p>
+        <p class="feat-desc">担当スタイリストが最初から最後まで担当します</p>
+      </div>
+    </div>
+    <div class="feat-item">
+      <svg class="feat-icon" viewBox="0 0 48 48" fill="none">
+        <rect x="6" y="10" width="36" height="28" rx="3" fill="var(--sage-pale)" stroke="var(--sage)" stroke-width="1.2"/>
+        <path d="M15 24 L21 30 L33 18" stroke="var(--forest-lt)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="feat-content">
+        <p class="feat-title">Online Booking</p>
+        <p class="feat-desc">24時間いつでもオンラインでご予約できます</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GALLERY ══ -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <span class="sec-ey center">Gallery</span>
+    <h2 class="sec-title" style="color:var(--forest)">Style Works</h2>
+    <p class="sec-desc" style="color:var(--text-mid);margin:0 auto;text-align:center;">季節やトレンドを取り入れながら、あなただけのスタイルを。</p>
+  </div>
+  <div class="gallery-grid reveal">
+    <div class="g-item"><div class="g-frame">
+      <!-- <img src="photos/main.jpg" alt="スタイル"> に差し替え -->
+      <img src="photo/hutoago.jpg" alt="スタイル" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div><div class="g-overlay"><span class="g-pill">Feature</span></div></div>
+    <div class="g-item"><div class="g-frame">
+      <img src="photo/hutoago.jpg" alt="カラー" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div><div class="g-overlay"><span class="g-pill">Color</span></div></div>
+    <div class="g-item"><div class="g-frame">
+      <img src="photo/hutoago.jpg" alt="カット" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div><div class="g-overlay"><span class="g-pill">Cut</span></div></div>
+    <div class="g-item"><div class="g-frame">
+      <img src="photo/hutoago.jpg" alt="パーマ" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div><div class="g-overlay"><span class="g-pill">Perm</span></div></div>
+    <div class="g-item"><div class="g-frame">
+      <img src="photo/hutoago.jpg" alt="トリートメント" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div><div class="g-overlay"><span class="g-pill">Treatment</span></div></div>
+  </div>
+</section>
+
+<!-- ══ STORES ══ -->
+<section id="stores">
+  <div class="stores-hd reveal">
+    <span class="sec-ey center">Our Stores</span>
+    <h2 class="sec-title" style="color:var(--forest)">店舗案内</h2>
+    <p class="sec-desc" style="color:var(--text-mid);margin:0 auto;text-align:center;">2つの店舗でお客様をお待ちしております。</p>
+  </div>
+  <div class="stores-grid">
+    <!-- 南柏店 -->
+    <div class="store-card reveal" id="minami-kashiwa">
+      <svg class="card-corner tl" width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M1 39 L1 1 L39 1" stroke="#1E3D2C" stroke-width="1.2"/><circle cx="1" cy="1" r="2.5" fill="#1E3D2C"/></svg>
+      <svg class="card-corner br" width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M1 39 L1 1 L39 1" stroke="#1E3D2C" stroke-width="1.2"/><circle cx="1" cy="1" r="2.5" fill="#1E3D2C"/></svg>
+      <div class="store-badge">
+        <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M4 1 Q7 3 6 5.5 Q5 7.5 4 7.5 Q3 7.5 2 5.5 Q1 3 4 1Z" fill="#3A7055"/></svg>
+        Store 01
+      </div>
+      <h2 class="store-name">Hair Resort <em>Garden</em><br>南柏店</h2>
+      <p class="store-kana">ヘアリゾートガーデン 南柏店</p>
+      <table class="store-table">
+        <tr><td>営業時間</td><td>10:00 — 20:00<br><span style="font-size:0.78rem;color:var(--text-soft)">最終受付 19:00</span></td></tr>
+        <tr><td>定休日</td><td>毎週火曜日</td></tr>
+        <tr><td>住所</td><td>千葉県柏市○○ X-X-X<br>○○ビル 1F</td></tr>
+        <tr><td>電話</td><td><a href="tel:0X0-XXXX-XXXX" style="color:inherit;text-decoration:none;">0X0-XXXX-XXXX</a></td></tr>
+        <tr><td>アクセス</td><td>東武野田線「南柏駅」徒歩 X 分</td></tr>
+      </table>
+      <div class="store-divider"></div>
+      <div class="store-map">
+        <!-- ▼ store-map-ph を消して Google Maps の <iframe> を貼る（南柏店） -->
+        <div class="store-map-ph">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="opacity:0.55"><path d="M11 1C7 1 3 4.6 3 8.5C3 14 11 21 11 21C11 21 19 14 19 8.5C19 4.6 15 1 11 1Z" stroke="#2A5440" stroke-width="1" fill="rgba(178,212,188,0.35)"/><circle cx="11" cy="8.5" r="3" stroke="#2A5440" stroke-width="1" fill="none"/></svg>
+          <p>Map Placeholder</p>
+          <a href="https://maps.google.com" target="_blank" class="map-link">Google Map で開く</a>
+        </div>
+      </div>
+      <a href="https://www.hotpepper.jp/" target="_blank" class="btn-reserve-store">南柏店を予約する</a>
+    </div>
+    <!-- CALM -->
+    <div class="store-card reveal reveal-d" id="calm">
+      <svg class="card-corner tl" width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M1 39 L1 1 L39 1" stroke="#1E3D2C" stroke-width="1.2"/><circle cx="1" cy="1" r="2.5" fill="#1E3D2C"/></svg>
+      <svg class="card-corner br" width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M1 39 L1 1 L39 1" stroke="#1E3D2C" stroke-width="1.2"/><circle cx="1" cy="1" r="2.5" fill="#1E3D2C"/></svg>
+      <div class="store-badge">
+        <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M4 1 Q7 3 6 5.5 Q5 7.5 4 7.5 Q3 7.5 2 5.5 Q1 3 4 1Z" fill="#B09050"/></svg>
+        Store 02
+      </div>
+      <h2 class="store-name">Hair Resort <em>Garden</em><br>CALM</h2>
+      <p class="store-kana">ヘアリゾートガーデン カルム</p>
+      <table class="store-table">
+        <tr><td>営業時間</td><td>10:00 — 20:00<br><span style="font-size:0.78rem;color:var(--text-soft)">最終受付 19:00</span></td></tr>
+        <tr><td>定休日</td><td>毎週火曜日</td></tr>
+        <tr><td>住所</td><td>○○県○○市○○ X-X-X<br>○○ビル 1F</td></tr>
+        <tr><td>電話</td><td><a href="tel:0X0-XXXX-XXXX" style="color:inherit;text-decoration:none;">0X0-XXXX-XXXX</a></td></tr>
+        <tr><td>アクセス</td><td>○○線「○○駅」徒歩 X 分</td></tr>
+      </table>
+      <div class="store-divider"></div>
+      <div class="store-map">
+        <!-- ▼ store-map-ph を消して Google Maps の <iframe> を貼る（CALM） -->
+        <div class="store-map-ph">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="opacity:0.55"><path d="M11 1C7 1 3 4.6 3 8.5C3 14 11 21 11 21C11 21 19 14 19 8.5C19 4.6 15 1 11 1Z" stroke="#B09050" stroke-width="1" fill="rgba(200,170,110,0.25)"/><circle cx="11" cy="8.5" r="3" stroke="#B09050" stroke-width="1" fill="none"/></svg>
+          <p>Map Placeholder</p>
+          <a href="https://maps.google.com" target="_blank" class="map-link">Google Map で開く</a>
+        </div>
+      </div>
+      <a href="https://www.hotpepper.jp/" target="_blank" class="btn-reserve-store">CALMを予約する</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<div class="cta">
+  <div class="cta-inner">
+    <span class="cta-ey">Reservation</span>
+    <h2 class="cta-title">あなたの時間を、<br><em>特別な時間に。</em></h2>
+    <p class="cta-sub">Online Reservation — 24 hours</p>
+    <div class="cta-btns">
+      <a href="https://www.hotpepper.jp/" target="_blank" class="btn-cta">南柏店を予約する</a>
+      <a href="https://www.hotpepper.jp/" target="_blank" class="btn-cta">CALMを予約する</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <span class="footer-logo">Hair Resort Garden</span>
+  <ul class="footer-links">
+    <li><a href="#gallery">Gallery</a></li>
+    <li class="footer-sep">|</li>
+    <li><a href="#minami-kashiwa">南柏店</a></li>
+    <li class="footer-sep">|</li>
+    <li><a href="#calm">CALM</a></li>
+    <li class="footer-sep">|</li>
+    <li><a href="https://www.hotpepper.jp/" target="_blank">ネット予約</a></li>
+  </ul>
+  <p class="footer-copy">&copy; 2025 Hair Resort Garden. All rights reserved.</p>
+</footer>
+
+<script>
+  // Hamburger toggle
+  const btn = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  btn.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
+  });
+  function closeMenu() {
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+  }
+  // Close on outside tap
+  document.addEventListener('click', (e) => {
+    if (!btn.contains(e.target) && !menu.contains(e.target)) closeMenu();
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
